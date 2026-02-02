@@ -1,0 +1,33 @@
+# Normalize line endings across platforms
+* text=auto eol=lf
+
+# Mark common binary formats
+*.pbix binary
+*.pbit binary
+*.png binary
+*.jpg binary
+*.jpeg binary
+*.gif binary
+*.ico binary
+*.pdf binary
+*.zip binary
+*.gz binary
+*.tar binary
+*.7z binary
+*.parquet binary
+*.feather binary
+
+# Ensure shell scripts keep LF
+*.sh text eol=lf
+
+# SQL and Python are text
+*.sql text linguist-language=SQL
+*.py  text linguist-language=Python
+
+# Improve GitHub Linguist language detection
+docs/** linguist-documentation
+notebooks/** linguist-documentation
+examples/** linguist-documentation
+
+# Keep Jupyter notebooks (if any) recognized correctly
+*.ipynb linguist-language=Jupyter+Notebook

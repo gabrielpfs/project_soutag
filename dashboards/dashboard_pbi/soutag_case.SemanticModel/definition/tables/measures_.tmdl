@@ -1,0 +1,112 @@
+table measures_
+	lineageTag: 9c6b3021-e2c7-46c4-b64c-4a1fe0e9a2ec
+
+	measure 'Total Awards' =
+			
+			COUNT(
+			    titles_clean[show_id]
+			)
+		formatString: 0
+		lineageTag: df725f83-7bf2-4a37-a726-eeb3be0248e3
+
+	measure 'Total Movies' =
+			
+			CALCULATE(
+			    DISTINCTCOUNT(
+			        titles_clean[show_id]),
+			        titles_clean[type] = "Movie"
+			)
+		formatString: 0
+		lineageTag: 7ec77074-14cd-4056-8db5-4d7504be8959
+
+	measure 'Total Series' =
+			
+			CALCULATE(
+			    DISTINCTCOUNT(
+			        titles_clean[show_id]),
+			        titles_clean[type] = "Tv Show"
+			)
+		formatString: 0
+		lineageTag: d3cd044a-362b-44ca-9daa-ccb04d0e6eb4
+
+	measure 'Country Rank' = ```
+			
+			TOPN( 10,
+			    SUMMARIZE(
+			        titles_by_country,
+			        titles_by_country[country],
+			        "Total",
+			        COUNT(titles_by_country[show_id])
+			    ),
+			    [Total],
+			    DESC
+			)
+			
+			```
+		isHidden
+		lineageTag: e60a02bb-a9f4-4eab-947b-017cb53c537d
+
+		changedProperty = IsHidden
+
+	measure 'Total Award by Country' =
+			
+			COUNT(
+			    titles_by_country[show_id]
+			)
+		formatString: 0
+		lineageTag: e281f8cd-4c60-443b-a399-32d46442ee27
+
+	measure 'Award Added' =
+			
+			COUNT(
+			    titles_clean[show_id]
+			)
+		formatString: 0
+		lineageTag: 61886579-905b-41ef-8425-d4baea5c1362
+
+	measure 'Total Awards by Cast' =
+			
+			COUNT(
+			    titles_by_cast[show_id]
+			)
+		formatString: 0
+		lineageTag: 4c75c8e9-0126-459a-9864-9c08c51c56ef
+
+	measure 'Total Titles by Genre' =
+			
+			COUNT(
+			    titles_by_genre[show_id]
+			)
+		formatString: 0
+		lineageTag: 0414b5ac-4b74-4594-8bd6-b7cc24456cc1
+
+	measure 'Total Awards by Gender' =
+			
+			COUNT(
+			    titles_by_genre[show_id]
+			)
+		formatString: 0
+		lineageTag: 79ba24e6-a099-49e8-bfb0-07fcd684fb83
+
+	column Column1
+		dataType: string
+		isHidden
+		lineageTag: 705a5273-5123-4f32-aff6-bc0ebd4412f9
+		summarizeBy: none
+		sourceColumn: Column1
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	partition measures_ = m
+		mode: import
+		source =
+				let
+				    Source = Table.FromRows(Json.Document(Binary.Decompress(Binary.FromText("i44FAA==", BinaryEncoding.Base64), Compression.Deflate)), let _t = ((type nullable text) meta [Serialized.Text = true]) in type table [Column1 = _t]),
+				    #"Changed Type" = Table.TransformColumnTypes(Source,{{"Column1", type text}})
+				in
+				    #"Changed Type"
+
+	annotation PBI_ResultType = Table
+

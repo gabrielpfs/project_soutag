@@ -1,0 +1,37 @@
+relationship 749f2617-7ce2-485f-8efc-2c5c3fd5e10c
+	joinOnDateBehavior: datePartOnly
+	fromColumn: netflix_raw.date_added
+	toColumn: LocalDateTable_6b2a4155-2560-40f0-94c8-4fd857e403aa.Date
+
+relationship a6b11540-9259-45c3-9d56-2477cb13b6ee
+	joinOnDateBehavior: datePartOnly
+	fromColumn: view_monthly_trends.month
+	toColumn: LocalDateTable_651c0996-5cf5-4425-9a13-0896a59a25e9.Date
+
+relationship 3d8cfe04-2a01-4833-a053-fd3f9cae0bb8
+	fromColumn: titles_by_genre.show_id
+	toColumn: titles_clean.show_id
+
+	annotation PBI_IsFromSource = FS
+
+relationship 23a4662e-f0f8-4ab6-9f16-78fdd65159fc
+	fromColumn: titles_by_country.show_id
+	toColumn: titles_clean.show_id
+
+	annotation PBI_IsFromSource = FS
+
+relationship c3eb361d-03ea-4a50-8924-d3edb19bf602
+	fromColumn: titles_by_cast.show_id
+	toColumn: titles_clean.show_id
+
+	annotation PBI_IsFromSource = FS
+
+relationship 0173b205-f761-45bd-8f50-1d72f598a3d2
+	joinOnDateBehavior: datePartOnly
+	fromColumn: dim_calendar.Date
+	toColumn: LocalDateTable_063fd956-845c-4c3a-ae06-dd856772de18.Date
+
+relationship 9a54f74b-05e0-ec41-7447-67a4c1f54a67
+	fromColumn: titles_clean.date_added
+	toColumn: dim_calendar.Date
+

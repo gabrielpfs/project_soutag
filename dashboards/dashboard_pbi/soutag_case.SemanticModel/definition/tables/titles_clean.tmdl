@@ -1,0 +1,130 @@
+table titles_clean
+	lineageTag: 64c4d219-03c5-4592-b0ec-65760b2da727
+
+	column show_id
+		dataType: string
+		lineageTag: 9b880f8b-1c46-42d7-8501-5b5d7dcb9842
+		summarizeBy: none
+		sourceColumn: show_id
+
+		annotation SummarizationSetBy = Automatic
+
+	column type
+		dataType: string
+		lineageTag: b9da1a73-7285-4f16-8d27-3cdb7d32ca78
+		summarizeBy: none
+		sourceColumn: type
+
+		annotation SummarizationSetBy = Automatic
+
+	column title
+		dataType: string
+		lineageTag: ca279ba2-0cbb-4a6c-9563-20423e4b9e46
+		summarizeBy: none
+		sourceColumn: title
+
+		annotation SummarizationSetBy = Automatic
+
+	column director
+		dataType: string
+		lineageTag: ad194e23-792f-4bd2-b09a-114453272ea8
+		summarizeBy: none
+		sourceColumn: director
+
+		annotation SummarizationSetBy = Automatic
+
+	column cast
+		dataType: string
+		lineageTag: 310fb850-bde3-4c4b-8f62-b97d6f691c41
+		summarizeBy: none
+		sourceColumn: cast
+
+		annotation SummarizationSetBy = Automatic
+
+	column country
+		dataType: string
+		lineageTag: 8d4a3b88-ec21-470b-9049-9c7f52eba0de
+		summarizeBy: none
+		sourceColumn: country
+
+		annotation SummarizationSetBy = Automatic
+
+	column date_added
+		dataType: dateTime
+		formatString: Short Date
+		lineageTag: 18fffad2-6e24-4955-acda-804846f2b57e
+		summarizeBy: none
+		sourceColumn: date_added
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column release_year
+		dataType: int64
+		formatString: 0
+		lineageTag: 6c27beaf-8611-4a1d-ba7a-0b91737be71f
+		summarizeBy: none
+		sourceColumn: release_year
+
+		annotation SummarizationSetBy = User
+
+	column duration
+		dataType: string
+		lineageTag: cfb9e32e-ccaf-4972-b039-2aa35ee550a7
+		summarizeBy: none
+		sourceColumn: duration
+
+		annotation SummarizationSetBy = Automatic
+
+	column listed_in
+		dataType: string
+		lineageTag: 89579447-f2ea-4508-9e29-7e073dc97a09
+		summarizeBy: none
+		sourceColumn: listed_in
+
+		annotation SummarizationSetBy = Automatic
+
+	column description
+		dataType: string
+		lineageTag: 87511943-1d81-4407-ab43-7bab8449ff10
+		summarizeBy: none
+		sourceColumn: description
+
+		annotation SummarizationSetBy = Automatic
+
+	column duration_value
+		dataType: int64
+		formatString: 0
+		lineageTag: 520fb408-b1db-4832-8176-c08361f66246
+		summarizeBy: none
+		sourceColumn: duration_value
+
+		annotation SummarizationSetBy = User
+
+	column duration_unit
+		dataType: string
+		lineageTag: d0c3092a-43a7-47c5-8e46-d0e7186217d9
+		summarizeBy: none
+		sourceColumn: duration_unit
+
+		annotation SummarizationSetBy = Automatic
+
+	partition titles_clean = m
+		mode: import
+		source =
+				let
+				    Source = Odbc.DataSource("dsn=Supabase_PBI", [HierarchicalNavigation=true]),
+				    postgres_Database = Source{[Name="postgres",Kind="Database"]}[Data],
+				    public_Schema = postgres_Database{[Name="public",Kind="Schema"]}[Data],
+				    titles_clean_Table = public_Schema{[Name="titles_clean",Kind="Table"]}[Data],
+				    #"Changed Type" = Table.TransformColumnTypes(titles_clean_Table,{{"date_added", type date}}),
+				    #"Removed Columns" = Table.RemoveColumns(#"Changed Type",{"titles_by_cast", "titles_by_country", "titles_by_genre", "rating"}),
+				    #"Capitalized Each Word" = Table.TransformColumns(#"Removed Columns",{{"type", Text.Proper, type text}})
+				in
+				    #"Capitalized Each Word"
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+

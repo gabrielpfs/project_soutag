@@ -1,0 +1,136 @@
+table dim_calendar
+	lineageTag: e19ae55c-b955-4f03-af5b-011bbc937144
+
+	column Date
+		formatString: Short Date
+		lineageTag: 24b82cba-1f27-4177-8426-8e9c7d6c8ed2
+		summarizeBy: none
+		isNameInferred
+		sourceColumn: [Date]
+
+		variation Variation
+			isDefault
+			relationship: 0173b205-f761-45bd-8f50-1d72f598a3d2
+			defaultHierarchy: LocalDateTable_063fd956-845c-4c3a-ae06-dd856772de18.'Date Hierarchy'
+
+		annotation SummarizationSetBy = Automatic
+
+	column year
+		formatString: 0
+		lineageTag: 27b15270-76b3-45a6-8752-5e5d4cbc5c64
+		summarizeBy: none
+		isNameInferred
+		sourceColumn: [year]
+
+		annotation SummarizationSetBy = User
+
+	column month_number
+		formatString: 0
+		lineageTag: 746aaf11-fb62-4c1c-a8a7-1290308c2e0c
+		summarizeBy: none
+		isNameInferred
+		sourceColumn: [month_number]
+
+		annotation SummarizationSetBy = User
+
+	column month_name
+		lineageTag: d39cf538-dd33-4951-a176-3400ece0873d
+		summarizeBy: none
+		isNameInferred
+		sourceColumn: [month_name]
+
+		annotation SummarizationSetBy = Automatic
+
+	column year_month
+		lineageTag: bed20bf0-80df-4cd2-b05c-e3086d8a5ead
+		summarizeBy: none
+		isNameInferred
+		sourceColumn: [year_month]
+
+		annotation SummarizationSetBy = Automatic
+
+	column quarter
+		lineageTag: 98ecb82a-0cfe-44dd-b128-aaeb199e219e
+		summarizeBy: none
+		isNameInferred
+		sourceColumn: [quarter]
+
+		annotation SummarizationSetBy = Automatic
+
+	column year_quarter
+		lineageTag: 8b18b8d4-c980-4b9c-9b08-db59a303f276
+		summarizeBy: none
+		isNameInferred
+		sourceColumn: [year_quarter]
+
+		annotation SummarizationSetBy = Automatic
+
+	column day
+		formatString: 0
+		lineageTag: 6ba25697-50ec-4bec-bd04-15a9394dc18c
+		summarizeBy: none
+		isNameInferred
+		sourceColumn: [day]
+
+		annotation SummarizationSetBy = User
+
+	column dayweek_number
+		formatString: 0
+		lineageTag: c94fd0e1-e846-48ef-ba73-4e453aca7840
+		summarizeBy: none
+		isNameInferred
+		sourceColumn: [dayweek_number]
+
+		annotation SummarizationSetBy = User
+
+	column dayweek_name
+		lineageTag: 17d0f264-78aa-4f1d-bd9e-f3275eaf1378
+		summarizeBy: none
+		isNameInferred
+		sourceColumn: [dayweek_name]
+
+		annotation SummarizationSetBy = Automatic
+
+	column week_year
+		formatString: 0
+		lineageTag: b249bcda-1203-4503-bb48-1e047289cd5b
+		summarizeBy: none
+		isNameInferred
+		sourceColumn: [week_year]
+
+		annotation SummarizationSetBy = User
+
+	column month_abbr
+		lineageTag: 664e9998-c67d-496d-a117-eedfa506bb8b
+		summarizeBy: none
+		isNameInferred
+		sourceColumn: [month_abbr]
+
+		annotation SummarizationSetBy = Automatic
+
+	partition dim_calendar = calculated
+		mode: import
+		source = ```
+				
+				VAR startDate = DATE(2008,1,1)   // Defina o início
+				VAR endDate   = DATE(2021,12,31) // Defina o fim (ou use MAX da sua tabela de fatos)
+				RETURN
+				ADDCOLUMNS (
+				    CALENDAR (startDate, endDate),
+				    "year", YEAR([date]),
+				    "month_number", MONTH([Date]),
+				    "month_name", FORMAT([Date], "MMMM"),
+				    "month_abbr", FORMAT ( [Date], "MMM" ), -- mês abreviado
+				    "year_month", FORMAT([Date], "YYYY-MM"),
+				    "quarter", "T" & FORMAT([Date], "Q"),
+				    "year_quarter", FORMAT([Date], "YYYY") & "-T" & FORMAT([Date], "Q"),
+				    "day", DAY([Date]),
+				    "dayweek_number", WEEKDAY([Date],2),     // 2 = semana começando na segunda
+				    "dayweek_name", FORMAT([Date], "DDDD"),
+				    "week_year", WEEKNUM([Date],2)            // 2 = semana ISO (segunda-feira)
+				)
+				
+				```
+
+	annotation PBI_Id = 65a2210c1cbf48f991fd9f14309515a7
+

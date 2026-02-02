@@ -1,0 +1,124 @@
+table netflix_raw
+	lineageTag: 02f40332-9fc0-45d5-b968-67471de5c163
+
+	column show_id
+		dataType: string
+		lineageTag: 4a9cc09b-0fea-4da0-ade7-252e8be66428
+		summarizeBy: none
+		sourceColumn: show_id
+
+		annotation SummarizationSetBy = Automatic
+
+	column type
+		dataType: string
+		lineageTag: 23ab196a-b410-402b-ac92-32efcae591d7
+		summarizeBy: none
+		sourceColumn: type
+
+		annotation SummarizationSetBy = Automatic
+
+	column title
+		dataType: string
+		lineageTag: ce431cb5-caef-4282-97d5-169509b67800
+		summarizeBy: none
+		sourceColumn: title
+
+		annotation SummarizationSetBy = Automatic
+
+	column director
+		dataType: string
+		lineageTag: c9c56674-8878-4f40-a8d9-a94146e4495e
+		summarizeBy: none
+		sourceColumn: director
+
+		annotation SummarizationSetBy = Automatic
+
+	column cast
+		dataType: string
+		lineageTag: bb583b16-8b1d-4107-a759-86e36411ceba
+		summarizeBy: none
+		sourceColumn: cast
+
+		annotation SummarizationSetBy = Automatic
+
+	column country
+		dataType: string
+		lineageTag: 604852fb-45b3-4f92-8c40-fc71a57bec95
+		summarizeBy: none
+		sourceColumn: country
+
+		annotation SummarizationSetBy = Automatic
+
+	column date_added
+		dataType: dateTime
+		formatString: Long Date
+		lineageTag: e9b9769b-4b6a-4790-9e86-27b4d4555f79
+		summarizeBy: none
+		sourceColumn: date_added
+
+		variation Variation
+			isDefault
+			relationship: 749f2617-7ce2-485f-8efc-2c5c3fd5e10c
+			defaultHierarchy: LocalDateTable_6b2a4155-2560-40f0-94c8-4fd857e403aa.'Date Hierarchy'
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column release_year
+		dataType: int64
+		formatString: 0
+		lineageTag: 550fd697-112a-4b69-8e2a-69e8c1cb3aa8
+		summarizeBy: none
+		sourceColumn: release_year
+
+		annotation SummarizationSetBy = User
+
+	column rating
+		dataType: string
+		lineageTag: 0f96e0ba-7134-4377-8f69-fe881b81830e
+		summarizeBy: none
+		sourceColumn: rating
+
+		annotation SummarizationSetBy = Automatic
+
+	column duration
+		dataType: string
+		lineageTag: fc71049e-a640-441e-aaa8-b4c5a90cd1a1
+		summarizeBy: none
+		sourceColumn: duration
+
+		annotation SummarizationSetBy = Automatic
+
+	column listed_in
+		dataType: string
+		lineageTag: d1b185c1-0ea7-427e-bf2d-d0983d39350e
+		summarizeBy: none
+		sourceColumn: listed_in
+
+		annotation SummarizationSetBy = Automatic
+
+	column description
+		dataType: string
+		lineageTag: 6b802708-0013-43c1-b0d7-79a84c07d4c3
+		summarizeBy: none
+		sourceColumn: description
+
+		annotation SummarizationSetBy = Automatic
+
+	partition netflix_raw = m
+		mode: import
+		source =
+				let
+				    Source = Odbc.DataSource("dsn=Supabase_PBI", [HierarchicalNavigation=true]),
+				    postgres_Database = Source{[Name="postgres",Kind="Database"]}[Data],
+				    public_Schema = postgres_Database{[Name="public",Kind="Schema"]}[Data],
+				    netflix_raw_Table = public_Schema{[Name="netflix_raw",Kind="Table"]}[Data],
+				    #"Changed Type" = Table.TransformColumnTypes(netflix_raw_Table,{{"date_added", type date}, {"release_year", Int64.Type}})
+				in
+				    #"Changed Type"
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+

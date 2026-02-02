@@ -1,0 +1,69 @@
+table titles_by_cast
+	lineageTag: 6ea5d482-9ecf-435c-90ad-465d183fe2f2
+
+	column id
+		dataType: int64
+		formatString: 0
+		lineageTag: 63e957b0-cd38-4002-9ae4-6f271ef7bcbc
+		summarizeBy: none
+		sourceColumn: id
+
+		annotation SummarizationSetBy = User
+
+	column show_id
+		dataType: string
+		lineageTag: 15b21e71-12a0-4ec7-a598-9f5dfe9b1d28
+		summarizeBy: none
+		sourceColumn: show_id
+
+		annotation SummarizationSetBy = Automatic
+
+	column actor_higienized
+		dataType: string
+		lineageTag: 76554cf0-cac0-4287-967f-6aa668b2a9ec
+		summarizeBy: none
+		sourceColumn: actor_higienized
+
+		annotation SummarizationSetBy = Automatic
+
+	column actor_first_name
+		dataType: string
+		lineageTag: 49cbfa60-fe3c-4078-b461-ef23d994a656
+		summarizeBy: none
+		sourceColumn: actor_first_name
+
+		annotation SummarizationSetBy = Automatic
+
+	column actor_last_name
+		dataType: string
+		lineageTag: fffcaef7-8109-43d6-b8a8-4f3921ce2717
+		summarizeBy: none
+		sourceColumn: actor_last_name
+
+		annotation SummarizationSetBy = Automatic
+
+	partition titles_by_cast = m
+		mode: import
+		source =
+				let
+				    Source = Odbc.DataSource("dsn=Supabase_PBI", [HierarchicalNavigation=true]),
+				    postgres_Database = Source{[Name="postgres",Kind="Database"]}[Data],
+				    public_Schema = postgres_Database{[Name="public",Kind="Schema"]}[Data],
+				    titles_by_cast_Table = public_Schema{[Name="titles_by_cast",Kind="Table"]}[Data],
+				    #"Removed Columns" = Table.RemoveColumns(titles_by_cast_Table,{"titles_clean"}),
+				    #"Added Custom" = Table.AddColumn(#"Removed Columns", "actor_higienizada", each let
+				    nomes = Text.Split([actor], " "),
+				    primeiro = List.First(nomes),
+				    ultimo = List.Last(nomes)
+				in
+				    primeiro & " " & ultimo),
+				    #"Split Column by Delimiter" = Table.SplitColumn(#"Added Custom", "actor", Splitter.SplitTextByEachDelimiter({" "}, QuoteStyle.Csv, false), {"actor.1", "actor.2"}),
+				    #"Changed Type" = Table.TransformColumnTypes(#"Split Column by Delimiter",{{"actor.1", type text}, {"actor.2", type text}}),
+				    #"Renamed Columns" = Table.RenameColumns(#"Changed Type",{{"actor.1", "actor_first_name"}, {"actor.2", "actor_last_name"}, {"actor_higienizada", "actor_higienized"}})
+				in
+				    #"Renamed Columns"
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+

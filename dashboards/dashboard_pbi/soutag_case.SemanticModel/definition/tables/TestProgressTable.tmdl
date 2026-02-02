@@ -1,0 +1,33 @@
+table TestProgressTable
+	lineageTag: f34f770e-e414-4bbb-8936-31c0da9d7417
+
+	column Value
+		formatString: 0
+		lineageTag: f6cdbef7-f48a-44ad-b529-cc5a14c3fd62
+		summarizeBy: sum
+		isNameInferred
+		sourceColumn: [Value]
+
+		annotation SummarizationSetBy = Automatic
+
+	column ProgressPercentage
+		lineageTag: 730b1931-ea2c-4e95-abad-82764070b4be
+		summarizeBy: sum
+		isNameInferred
+		sourceColumn: [ProgressPercentage]
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	partition TestProgressTable = calculated
+		mode: import
+		source =
+				
+				ADDCOLUMNS(
+				    GENERATESERIES(1, 20, 1),
+				    "ProgressPercentage", RAND()
+				)
+
+	annotation PBI_Id = 0060f9f84e204ec092c5e8aa172647a3
+

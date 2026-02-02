@@ -1,0 +1,41 @@
+table view_monthly_trends
+	lineageTag: ee92c849-ae72-4cff-b761-40e325ecaf30
+
+	column month
+		dataType: dateTime
+		formatString: General Date
+		lineageTag: 83e3883e-5087-4b2b-abed-01b6dbf48d8c
+		summarizeBy: none
+		sourceColumn: month
+
+		variation Variation
+			isDefault
+			relationship: a6b11540-9259-45c3-9d56-2477cb13b6ee
+			defaultHierarchy: LocalDateTable_651c0996-5cf5-4425-9a13-0896a59a25e9.'Date Hierarchy'
+
+		annotation SummarizationSetBy = Automatic
+
+	column total_titles
+		dataType: int64
+		formatString: 0
+		lineageTag: 20db589b-7939-4dd9-bf19-64adbc414ee6
+		summarizeBy: none
+		sourceColumn: total_titles
+
+		annotation SummarizationSetBy = User
+
+	partition view_monthly_trends = m
+		mode: import
+		source =
+				let
+				    Source = Odbc.DataSource("dsn=Supabase_PBI", [HierarchicalNavigation=true]),
+				    postgres_Database = Source{[Name="postgres",Kind="Database"]}[Data],
+				    public_Schema = postgres_Database{[Name="public",Kind="Schema"]}[Data],
+				    view_monthly_trends_View = public_Schema{[Name="view_monthly_trends",Kind="View"]}[Data]
+				in
+				    view_monthly_trends_View
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+

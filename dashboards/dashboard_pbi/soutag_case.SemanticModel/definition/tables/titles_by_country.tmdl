@@ -1,0 +1,36 @@
+table titles_by_country
+	lineageTag: aca4a9f7-36b5-4721-bfde-df542b33477a
+
+	column show_id
+		dataType: string
+		lineageTag: 655bb131-50ea-4e78-a838-b3e72c596145
+		summarizeBy: none
+		sourceColumn: show_id
+
+		annotation SummarizationSetBy = Automatic
+
+	column country
+		dataType: string
+		lineageTag: 74c85210-de82-4553-9fd0-4cdd95689ae4
+		summarizeBy: none
+		sourceColumn: country
+
+		annotation SummarizationSetBy = Automatic
+
+	partition titles_by_country = m
+		mode: import
+		source =
+				let
+				    Source = Odbc.DataSource("dsn=Supabase_PBI", [HierarchicalNavigation=true]),
+				    postgres_Database = Source{[Name="postgres",Kind="Database"]}[Data],
+				    public_Schema = postgres_Database{[Name="public",Kind="Schema"]}[Data],
+				    titles_by_country_Table = public_Schema{[Name="titles_by_country",Kind="Table"]}[Data],
+				    #"Removed Columns" = Table.RemoveColumns(titles_by_country_Table,{"titles_clean"}),
+				    #"Capitalized Each Word" = Table.TransformColumns(#"Removed Columns",{{"country", Text.Proper, type text}})
+				in
+				    #"Capitalized Each Word"
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+

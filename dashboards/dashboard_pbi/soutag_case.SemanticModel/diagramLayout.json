@@ -1,0 +1,178 @@
+{
+  "version": "1.1.0",
+  "diagrams": [
+    {
+      "ordinal": 0,
+      "scrollPosition": {
+        "x": 0,
+        "y": 0
+      },
+      "nodes": [
+        {
+          "location": {
+            "x": 250,
+            "y": 0
+          },
+          "nodeIndex": "netflix_raw",
+          "nodeLineageTag": "02f40332-9fc0-45d5-b968-67471de5c163",
+          "size": {
+            "height": 104,
+            "width": 234
+          },
+          "zIndex": 2,
+          "expandedHeight": 300
+        },
+        {
+          "location": {
+            "x": 500,
+            "y": 474.36209389008252
+          },
+          "nodeIndex": "titles_by_cast",
+          "nodeLineageTag": "6ea5d482-9ecf-435c-90ad-465d183fe2f2",
+          "size": {
+            "height": 176,
+            "width": 234
+          },
+          "zIndex": 10
+        },
+        {
+          "location": {
+            "x": 500,
+            "y": 321.04498932218974
+          },
+          "nodeIndex": "titles_by_country",
+          "nodeLineageTag": "aca4a9f7-36b5-4721-bfde-df542b33477a",
+          "size": {
+            "height": 128,
+            "width": 234
+          },
+          "zIndex": 3
+        },
+        {
+          "location": {
+            "x": 499.45846624297491,
+            "y": 130
+          },
+          "nodeIndex": "titles_by_genre",
+          "nodeLineageTag": "6b4ffbf2-b2f4-4487-a882-0ba71b89e9cc",
+          "size": {
+            "height": 152,
+            "width": 234
+          },
+          "zIndex": 4
+        },
+        {
+          "location": {
+            "x": 0,
+            "y": 256.20046834086338
+          },
+          "nodeIndex": "titles_clean",
+          "nodeLineageTag": "64c4d219-03c5-4592-b0ec-65760b2da727",
+          "size": {
+            "height": 300,
+            "width": 234
+          },
+          "zIndex": 5
+        },
+        {
+          "location": {
+            "x": 249.63861096100527,
+            "y": 835.8740837814521
+          },
+          "nodeIndex": "view_monthly_trends",
+          "nodeLineageTag": "ee92c849-ae72-4cff-b761-40e325ecaf30",
+          "size": {
+            "height": 128,
+            "width": 234
+          },
+          "zIndex": 11
+        },
+        {
+          "location": {
+            "x": 498.59327210254833,
+            "y": 835.8740837814521
+          },
+          "nodeIndex": "view_top_cast",
+          "nodeLineageTag": "2c7fe5e4-cfab-42a1-9bef-dccb02902e1a",
+          "size": {
+            "height": 128,
+            "width": 234
+          },
+          "zIndex": 6
+        },
+        {
+          "location": {
+            "x": 498.54145626431205,
+            "y": 972.37732227134188
+          },
+          "nodeIndex": "view_top_countries",
+          "nodeLineageTag": "1843cb91-470d-4530-890e-58b9fbeb2cba",
+          "size": {
+            "height": 128,
+            "width": 234
+          },
+          "zIndex": 7
+        },
+        {
+          "location": {
+            "x": 250.53752439848324,
+            "y": 971.04896223549974
+          },
+          "nodeIndex": "view_type_distribution",
+          "nodeLineageTag": "fa276e9e-cc0e-49ad-beed-01a1ca37e139",
+          "size": {
+            "height": 128,
+            "width": 234
+          },
+          "zIndex": 8
+        },
+        {
+          "location": {
+            "x": 0,
+            "y": 0
+          },
+          "nodeIndex": "measures_",
+          "nodeLineageTag": "9c6b3021-e2c7-46c4-b64c-4a1fe0e9a2ec",
+          "size": {
+            "height": 104,
+            "width": 234
+          },
+          "zIndex": 9
+        },
+        {
+          "location": {
+            "x": 908,
+            "y": 306.18866113567094
+          },
+          "nodeIndex": "dim_calendar",
+          "nodeLineageTag": "e19ae55c-b955-4f03-af5b-011bbc937144",
+          "size": {
+            "height": 200,
+            "width": 234
+          },
+          "zIndex": 1
+        },
+        {
+          "location": {
+            "x": 1192,
+            "y": 450.18866113567094
+          },
+          "nodeIndex": "TestProgressTable",
+          "size": {
+            "height": 200,
+            "width": 234
+          },
+          "zIndex": 0
+        }
+      ],
+      "name": "All tables",
+      "zoomValue": 50,
+      "pinKeyFieldsToTop": false,
+      "showExtraHeaderInfo": false,
+      "hideKeyFieldsWhenCollapsed": false,
+      "tablesLocked": false
+    }
+  ],
+  "selectedDiagram": "All tables",
+  "defaultDiagram": "All tables"
+}

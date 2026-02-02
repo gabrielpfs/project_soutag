@@ -1,0 +1,35 @@
+table view_top_countries
+	lineageTag: 1843cb91-470d-4530-890e-58b9fbeb2cba
+
+	column country
+		dataType: string
+		lineageTag: 90b19c89-3545-4b7a-b4cc-1beb06668bba
+		summarizeBy: none
+		sourceColumn: country
+
+		annotation SummarizationSetBy = Automatic
+
+	column total_titles
+		dataType: int64
+		formatString: 0
+		lineageTag: 13ecdc74-9a99-4523-96b7-430786f1faac
+		summarizeBy: sum
+		sourceColumn: total_titles
+
+		annotation SummarizationSetBy = Automatic
+
+	partition view_top_countries = m
+		mode: import
+		source =
+				let
+				    Source = Odbc.DataSource("dsn=Supabase_PBI", [HierarchicalNavigation=true]),
+				    postgres_Database = Source{[Name="postgres",Kind="Database"]}[Data],
+				    public_Schema = postgres_Database{[Name="public",Kind="Schema"]}[Data],
+				    view_top_countries_View = public_Schema{[Name="view_top_countries",Kind="View"]}[Data]
+				in
+				    view_top_countries_View
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+

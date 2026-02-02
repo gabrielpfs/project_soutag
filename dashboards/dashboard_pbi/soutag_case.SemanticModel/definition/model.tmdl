@@ -1,0 +1,33 @@
+model Model
+	culture: en-US
+	defaultPowerBIDataSourceVersion: powerBI_V3
+	sourceQueryCulture: en-US
+	dataAccessOptions
+		legacyRedirects
+		returnErrorValuesAsNull
+
+annotation __PBI_TimeIntelligenceEnabled = 1
+
+annotation PBI_QueryOrder = ["titles_clean","titles_by_genre","titles_by_country","titles_by_cast","netflix_raw","view_type_distribution","view_top_countries","view_top_cast","view_monthly_trends","measures_"]
+
+annotation PBI_ProTooling = ["DevMode"]
+
+ref table titles_clean
+ref table DateTableTemplate_853387e9-fa4c-422c-bf20-0881057fd0e8
+ref table titles_by_genre
+ref table titles_by_country
+ref table titles_by_cast
+ref table netflix_raw
+ref table LocalDateTable_6b2a4155-2560-40f0-94c8-4fd857e403aa
+ref table view_type_distribution
+ref table view_top_countries
+ref table view_top_cast
+ref table view_monthly_trends
+ref table LocalDateTable_651c0996-5cf5-4425-9a13-0896a59a25e9
+ref table measures_
+ref table dim_calendar
+ref table LocalDateTable_063fd956-845c-4c3a-ae06-dd856772de18
+ref table TestProgressTable
+
+ref cultureInfo en-US
+

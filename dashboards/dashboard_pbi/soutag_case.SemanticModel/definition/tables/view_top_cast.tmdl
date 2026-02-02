@@ -1,0 +1,35 @@
+table view_top_cast
+	lineageTag: 2c7fe5e4-cfab-42a1-9bef-dccb02902e1a
+
+	column actor
+		dataType: string
+		lineageTag: cbf9bcd8-eef5-48af-be48-5c4cce3f7324
+		summarizeBy: none
+		sourceColumn: actor
+
+		annotation SummarizationSetBy = Automatic
+
+	column appearances
+		dataType: int64
+		formatString: 0
+		lineageTag: 524c433b-125e-40a3-9873-ebc8418d89ac
+		summarizeBy: sum
+		sourceColumn: appearances
+
+		annotation SummarizationSetBy = Automatic
+
+	partition view_top_cast = m
+		mode: import
+		source =
+				let
+				    Source = Odbc.DataSource("dsn=Supabase_PBI", [HierarchicalNavigation=true]),
+				    postgres_Database = Source{[Name="postgres",Kind="Database"]}[Data],
+				    public_Schema = postgres_Database{[Name="public",Kind="Schema"]}[Data],
+				    view_top_cast_View = public_Schema{[Name="view_top_cast",Kind="View"]}[Data]
+				in
+				    view_top_cast_View
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+

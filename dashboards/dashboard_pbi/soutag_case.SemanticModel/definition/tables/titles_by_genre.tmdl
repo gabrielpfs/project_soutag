@@ -1,0 +1,44 @@
+table titles_by_genre
+	lineageTag: 6b4ffbf2-b2f4-4487-a882-0ba71b89e9cc
+
+	column show_id
+		dataType: string
+		lineageTag: 80a4eb3b-46d9-4fc0-9e2f-abd8cb1b6374
+		summarizeBy: none
+		sourceColumn: show_id
+
+		annotation SummarizationSetBy = Automatic
+
+	column listed_in
+		dataType: string
+		lineageTag: dd19f384-5aeb-441b-9003-e72b4a1751b3
+		summarizeBy: none
+		sourceColumn: listed_in
+
+		annotation SummarizationSetBy = Automatic
+
+	column genre
+		dataType: string
+		lineageTag: f5daacc8-cfd7-4055-bafb-107fe6bd1055
+		summarizeBy: none
+		sourceColumn: genre
+
+		annotation SummarizationSetBy = Automatic
+
+	partition titles_by_genre = m
+		mode: import
+		source =
+				let
+				    Source = Odbc.DataSource("dsn=Supabase_PBI", [HierarchicalNavigation=true]),
+				    postgres_Database = Source{[Name="postgres",Kind="Database"]}[Data],
+				    public_Schema = postgres_Database{[Name="public",Kind="Schema"]}[Data],
+				    titles_by_genre_Table = public_Schema{[Name="titles_by_genre",Kind="Table"]}[Data],
+				    #"Removed Columns" = Table.RemoveColumns(titles_by_genre_Table,{"titles_clean"}),
+				    #"Capitalized Each Word" = Table.TransformColumns(#"Removed Columns",{{"genre", Text.Proper, type text}})
+				in
+				    #"Capitalized Each Word"
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+

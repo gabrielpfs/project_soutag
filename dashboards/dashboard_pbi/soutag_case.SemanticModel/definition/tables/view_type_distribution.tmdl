@@ -1,0 +1,35 @@
+table view_type_distribution
+	lineageTag: fa276e9e-cc0e-49ad-beed-01a1ca37e139
+
+	column type
+		dataType: string
+		lineageTag: 76e1426b-6998-4738-9855-2aa9199cac72
+		summarizeBy: none
+		sourceColumn: type
+
+		annotation SummarizationSetBy = Automatic
+
+	column total
+		dataType: int64
+		formatString: 0
+		lineageTag: 065462a2-92ee-4693-8b6a-99a6baa67601
+		summarizeBy: sum
+		sourceColumn: total
+
+		annotation SummarizationSetBy = Automatic
+
+	partition view_type_distribution = m
+		mode: import
+		source =
+				let
+				    Source = Odbc.DataSource("dsn=Supabase_PBI", [HierarchicalNavigation=true]),
+				    postgres_Database = Source{[Name="postgres",Kind="Database"]}[Data],
+				    public_Schema = postgres_Database{[Name="public",Kind="Schema"]}[Data],
+				    view_type_distribution_View = public_Schema{[Name="view_type_distribution",Kind="View"]}[Data]
+				in
+				    view_type_distribution_View
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+
